@@ -45,6 +45,10 @@ export function commitAll(message: string, callback: (output: string) => void) {
   });
 }
 
+export function commit(message: string, callback: (output: string) => void) {
+  runGitCommand(['commit', '-m', message], callback);
+}
+
 export function createBranch(branch: string, callback: (output: string) => void) {
   runGitCommand(['checkout', '-b', branch], callback);
 }

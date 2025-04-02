@@ -7,6 +7,7 @@ import {
     getBranches,
     checkoutBranch,
     commitAll,
+    commit,
     createBranch,
     mergeBranch,
     initRepo,
@@ -55,7 +56,7 @@ async function EchoAgent() {
         } else if (command === ':git commit') {
             const msg = await ask('✍️ Commit message: ');
             if (!msg.trim()) return console.log(chalk.red('❌ Commit message cannot be empty.'));
-            commitAll(msg.trim(), (res) => console.log(chalk.green('\n✅ Git Commit Result:\n') + res));
+            commit(msg.trim(), (res) => console.log(chalk.green('\n✅ Git Commit Result:\n') + res));
         }
 
         rl.prompt(true);
