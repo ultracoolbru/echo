@@ -1,0 +1,13 @@
+[
+    {
+      "title": "Build login page",
+      "prompt": "Create a responsive login page with Mantine and TypeScript",
+      "status": "in progress"
+    },
+    {
+      "title": "Generate test cases",
+      "prompt": "Write Jest unit tests for the AuthController",
+      "status": "pending"
+    }
+  ]
+  

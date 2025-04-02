@@ -1,0 +1,43 @@
+{
+  "name": "Violt Web App",
+  "type": "Next.js 15 App Router",
+  "language": "TypeScript",
+  "ui": "Mantine",
+  "data": "MongoDB",
+  "auth": "NextAuth",
+  "goal": "Smart home platform for managing AI-driven IoT devices",
+  "description": "A comprehensive web platform that allows users to control and monitor smart home devices through an intuitive dashboard. The system integrates with various IoT devices and uses AI to optimize energy usage and automate routines.",
+  "tasks": [
+    "Design the application architecture following Next.js app router best practices",
+    "Create responsive UI components using Mantine UI library",
+    "Implement user authentication system with NextAuth including social logins",
+    "Design MongoDB schema for device management, user preferences, and automation rules",
+    "Develop RESTful API endpoints for device control and monitoring",
+    "Implement real-time device status updates using WebSockets",
+    "Create AI modules for energy optimization and predictive maintenance"
+  ],
+  "features": {
+    "dashboard": "Central control interface showing device status and quick actions",
+    "deviceManagement": "Add, configure, and group smart devices",
+    "automationRules": "Create custom rules based on time, device status, or user presence",
+    "energyAnalytics": "Track and optimize energy consumption patterns",
+    "mobileResponsive": "Fully functional on mobile devices with touch-friendly controls"
+  },
+  "architecture": {
+    "frontend": "Next.js with App Router, React Server Components, and client components where needed",
+    "api": "Route handlers for data fetching and mutations",
+    "database": "MongoDB for persistent storage with Mongoose ODM",
+    "realtime": "WebSockets for device status updates"
+  },
+  "deliverables": [
+    "Complete source code with documentation",
+    "Database schema and migration scripts",
+    "Deployment instructions for production environment",
+    "API documentation for IoT device integration"
+  ],
+  "constraints": {
+    "performance": "Dashboard must load within 2 seconds on average connections",
+    "accessibility": "Meet WCAG 2.1 AA standards",
+    "security": "Implement proper authentication, authorization, and data encryption"
+  }
+}

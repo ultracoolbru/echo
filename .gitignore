@@ -1,0 +1,5 @@
+.env
+**/node_modules*
+**/*.log*
+integrations/token.json
+integrations/client_secret.json

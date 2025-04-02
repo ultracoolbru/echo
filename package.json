@@ -1,0 +1,29 @@
+{
+  "name": "echo-digital-clone",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "start:scheduler": "ts-node scheduler/index.ts"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.4.0",
+    "axios": "^1.8.4",
+    "chalk": "^5.4.1",
+    "dotenv": "^16.4.7",
+    "googleapis": "^148.0.0",
+    "mangodb": "^1.0.0",
+    "mongodb": "^6.15.0",
+    "node-cron": "^3.0.3",
+    "open": "^10.1.0",
+    "path": "^0.12.7",
+    "simple-git": "^3.27.0"
+  },
+  "devDependencies": {
+    "@types/mongodb": "^4.0.6",
+    "@types/node": "^22.13.14",
+    "@types/node-cron": "^3.0.11"
+  }
+}
