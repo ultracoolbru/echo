@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import { rl, askInput } from './common';
 import { askLLM } from './askLLM';
 import { loadProjectMetadata } from './metadata';
-import { showDiff, gitCommit } from './git';
+import { getDiff, commitAll } from './git';
 import { logConversation, getRecentConversations } from '../data/memory';
 import { ensureTaskCollection, getClient, listTasks, Task, saveTask, markTaskDone } from './tasks';
 import { diagnoseMongoConnection } from './diagnostics';
@@ -74,7 +74,7 @@ async function runDevAgent(prompt: string, codeSnippet?: string) {
           editMode === 'p' ? output + '\n' + existing :
             output;
 
-      showDiff(existing, finalContent);
+      getDiff((res) => console.log(chalk.cyan('\n🔍 Git Diff:\n') + res));
       const confirm = await askInput('✅ Apply changes? (y/n): ');
       if (confirm.toLowerCase() !== 'y') return;
     }
@@ -83,7 +83,9 @@ async function runDevAgent(prompt: string, codeSnippet?: string) {
     globalThis.lastFileSaved = absolutePath;
     console.log(chalk.green(`✅ File saved: ${filePath}`));
 
-    await gitCommit(absolutePath, useRemote);
+    const msg = await askInput('✍️ Commit message: ');
+    if (!msg.trim()) return console.log(chalk.red('❌ Commit message cannot be empty.'));
+    commitAll(msg.trim(), (res) => console.log(chalk.green('\n✅ Git Commit Result:\n') + res));
     console.log(chalk.cyan('🔄 Git status updated.'));
 
   } catch (err: any) {
@@ -273,17 +275,17 @@ async function listAllTasks() {
     //   });
     // }
     console.log('Listing tasks...');
-      try {
-        await ensureTaskCollection();
-        const client = await getClient();
-        const db = client.db(dbName);
-        const tasks = db.collection<Task>(collectionName);
-        return await tasks.find({}).sort({ createdAt: -1 }).toArray();
-      } catch (err) {
-        console.log('Error listing tasks', err);
-        // Return empty array instead of throwing to make the function more robust
-        return [];
-      }
+    try {
+      await ensureTaskCollection();
+      const client = await getClient();
+      const db = client.db(dbName);
+      const tasks = db.collection<Task>(collectionName);
+      return await tasks.find({}).sort({ createdAt: -1 }).toArray();
+    } catch (err) {
+      console.log('Error listing tasks', err);
+      // Return empty array instead of throwing to make the function more robust
+      return [];
+    }
   } catch (e) {
     console.error(chalk.red('\n❌ Failed to load tasks:'), e instanceof Error ? e.message : String(e));
   }
