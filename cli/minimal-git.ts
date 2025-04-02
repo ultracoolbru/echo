@@ -9,7 +9,11 @@ import {
   commitAll,
   createBranch,
   mergeBranch,
-  initRepo
+  initRepo,
+  pullRemote,
+  pushRemote,
+  stashChanges,
+  showGitConfig
 } from './git';
 
 const rl = readline.createInterface({
@@ -24,7 +28,7 @@ function ask(question: string): Promise<string> {
 
 console.clear();
 console.log(chalk.cyan.bold('🧪 Echo Minimal CLI – Git'));
-console.log(chalk.gray('Commands: :git, :git init, :git log, :git diff, :git branches, :git checkout <branch>, :git commit, :git create <branch>, :git merge <branch>, exit'));
+console.log(chalk.gray('Commands: :git, :git init, :git log, :git diff, :git branches, :git checkout <branch>, :git commit, :git create <branch>, :git merge <branch>, :git pull, :git push, :git stash, :git config, exit'));
 rl.prompt();
 
 rl.on('line', async (input) => {
@@ -70,6 +74,26 @@ rl.on('line', async (input) => {
   } else if (command === ':git init') {
     initRepo((res) => {
       console.log(chalk.green('\n✅ Git Repo Initialized:\n') + res);
+      rl.prompt();
+    });
+  } else if (command === ':git pull') {
+    pullRemote((res) => {
+      console.log(chalk.green('\n⬇️ Git Pull Result:\n') + res);
+      rl.prompt();
+    });
+  } else if (command === ':git push') {
+    pushRemote((res) => {
+      console.log(chalk.green('\n⬆️ Git Push Result:\n') + res);
+      rl.prompt();
+    });
+  } else if (command === ':git stash') {
+    stashChanges((res) => {
+      console.log(chalk.green('\n📦 Git Stash Result:\n') + res);
+      rl.prompt();
+    });
+  } else if (command === ':git config') {
+    showGitConfig((res) => {
+      console.log(chalk.green('\n⚙️ Git Config:\n') + res);
       rl.prompt();
     });
   } else if (command.startsWith(':git checkout')) {
