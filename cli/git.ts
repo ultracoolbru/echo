@@ -2,7 +2,7 @@ import { spawn } from 'child_process';
 
 function runGitCommand(args: string[], callback: (output: string) => void) {
   const child = spawn('git', args, {
-    stdio: ['ignore', 'pipe', 'pipe'],
+    stdio: ['pipe', 'pipe', 'pipe'],
     shell: true,
     windowsHide: true
   });
