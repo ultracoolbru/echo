@@ -212,10 +212,3 @@ process.on('SIGINT', async () => {
   }
   process.exit(0);
 });
-
-// // At the end of the file, add a default export to ensure compatibility
-// export default {
-//   saveTask,
-//   listTasks,
-//   markTaskDone
-// };
