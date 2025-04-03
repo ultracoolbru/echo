@@ -36,7 +36,7 @@ console.error = (...args) => {
   originalConsoleError(...args);
 };
 
-export async function diagnoseMongoConnection() {
+export async function diagnoseSystem() {
   console.log('Starting MongoDB connection diagnosis...');
   console.log(`Using URI: ${uri.replace(/\/\/([^:]+):([^@]+)@/, '//***:***@')}`);
 
