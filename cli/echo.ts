@@ -44,10 +44,6 @@ async function EchoAgent() {
         if (command === ':git') {
             getStatus((res) => console.log(chalk.cyan('\n🔧 Git Status:\n') + res));
         } else if (command === ':git log') {
-            //TODO: This needs to be fixed due to the following error:
-            /* ❌ fatal: ambiguous argument '%s': unknown revision or path not in the working tree.
-            Use '--' to separate paths from revisions, like this:
-            'git <command> [<revision>...] -- [<file>...]' */
             getLog((res) => console.log(chalk.cyan('\n📜 Git Log:\n') + res));
         } else if (command === ':git diff') {
             getDiff((res) => console.log(chalk.cyan('\n🔍 Git Diff:\n') + res));
@@ -57,6 +53,10 @@ async function EchoAgent() {
             const msg = await ask('✍️ Commit message: ');
             if (!msg.trim()) return console.log(chalk.red('❌ Commit message cannot be empty.'));
             commit(msg.trim(), (res) => console.log(chalk.green('\n✅ Git Commit Result:\n') + res));
+        } else if (command === ':git commit all') {
+            const msg = await ask('✍️ Commit message: ');
+            if (!msg.trim()) return console.log(chalk.red('❌ Commit message cannot be empty.'));
+            commitAll(msg.trim(), (res) => console.log(chalk.green('\n✅ Git Commit Result:\n') + res));
         }
 
         rl.prompt(true);

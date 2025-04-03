@@ -24,7 +24,7 @@ export function getStatus(callback: (output: string) => void) {
 }
 
 export function getLog(callback: (output: string) => void) {
-  runGitCommand(['log', '-n', '5', '--pretty=format:%h %s (%cr)'], callback);
+  runGitCommand(['log', '-n', '5', '--pretty="format:%h %s (%cr)"'], callback);
 }
 
 export function getDiff(callback: (output: string) => void) {
