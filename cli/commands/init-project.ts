@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
+import { EchoCommand } from '../plugin-loader';
 
-export async function initProjectStructure(projectName: string, args: string[]) {
+async function initProjectStructure(projectName: string, args: string[]) {
     const projectPath = path.resolve(`./${projectName}`);
     if (!fs.existsSync(projectPath)) {
         fs.mkdirSync(projectPath);
@@ -26,3 +27,17 @@ export async function initProjectStructure(projectName: string, args: string[]) 
         console.log(chalk.green('📄 Created .gitignore'));
     }
 }
+
+const command: EchoCommand = {
+    name: ':project init',
+    description: 'Initialize a new project structure (project name and folders)',
+    async run(args: string[]) {
+        console.log('🔧 Running project init...');
+        initProjectStructure(args[0], args.slice(1)).catch((err) => {
+            console.error(chalk.red('❌ Error initializing project structure:'), err.message);
+        });
+        console.log(chalk.green('✅ Command Executed.\n'));
+    }
+};
+
+export default command;

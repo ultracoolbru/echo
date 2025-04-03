@@ -10,8 +10,20 @@ export function runGitCommand(args: string[], callback: (output: string) => void
   }
 }
 
+export function getStatus(callback: (output: string) => void) {
+  runGitCommand(['status'], callback);
+}
+
+export function getLog(callback: (output: string) => void) {
+  runGitCommand(['log', '-n', '5', '--pretty="format:%h %s (%cr)"'], callback);
+}
+
 export function getDiff(callback: (output: string) => void) {
   runGitCommand(['diff'], callback);
+}
+
+export function checkoutBranch(branch: string, callback: (output: string) => void) {
+  runGitCommand(['checkout', branch], callback);
 }
 
 export function commitAll(message: string, callback: (output: string) => void) {

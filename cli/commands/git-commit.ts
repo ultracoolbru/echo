@@ -3,12 +3,11 @@ import { runGitCommand } from './git';
 import chalk from 'chalk';
 
 const command: EchoCommand = {
-  name: ':git',
-  description: 'Show Git status',
-  aliases: [':git status', ':git st'],
-  async run() {
-    console.log('🔧 Running git status...');
-    runGitCommand(['status'], (output: string) => {
+  name: ':git commit',
+  description: 'Perform a Git commit',
+  async run(args: string[]) {
+    console.log('🔧 Running git commit...');
+    runGitCommand(['commit', '-m', args[0]], (output: string) => {
       console.log(output);
     });
     console.log(chalk.green('✅ Command Executed.\n'));

@@ -2,10 +2,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import chalk from 'chalk';
+import { EchoCommand } from '../plugin-loader';
 
-import { rl, ask } from './common';
-import { askLLM } from './askLLM';
-import { loadProjectMetadata } from './metadata';
+import { rl, ask } from '../common';
+import { askLLM } from '../askLLM';
+import { loadProjectMetadata } from '../metadata';
 import { getDiff, commitAll } from './git';
 import { logConversation, getRecentConversations } from '../../data/memory';
 
@@ -91,14 +92,15 @@ async function runDevAgent(prompt: string, codeSnippet?: string) {
   }
 }
 
-export function startAgent() {
+function startAgent() {
   (async () => {
     console.clear();
     console.log(chalk.cyan.bold('👨‍💻 Echo Dev Agent – Hybrid LLM Mode (Session)'));
     console.log(chalk.gray('Type your prompt or enter "exit" to quit. Press Ctrl+C anytime.'));
 
     while (true) {
-      const action = await ask('\n🔍 What should Echo do?\n> ');
+      console.log('\n🔍 What should Echo do?');
+      const action = await ask('> ');
 
       if (action.trim().toLowerCase() === 'exit') {
         endSession();
@@ -110,6 +112,16 @@ export function startAgent() {
     }
   })();
 }
+
+const command: EchoCommand = {
+  name: ':agent',
+  description: 'Start Echo Dev Agent session',
+  async run() {
+    startAgent();
+  }
+};
+
+export default command;
 
 function endSession() {
   console.log(chalk.yellow('\n👋 Session ended.'));

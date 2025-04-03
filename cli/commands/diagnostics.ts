@@ -2,6 +2,8 @@ import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
+import { EchoCommand } from '../plugin-loader';
+import chalk from 'chalk';
 
 // Configure environment
 dotenv.config({ path: path.resolve(__dirname, '.env') });
@@ -36,7 +38,7 @@ console.error = (...args) => {
   originalConsoleError(...args);
 };
 
-export async function diagnoseSystem() {
+async function diagnoseSystem() {
   console.log('Starting MongoDB connection diagnosis...');
   console.log(`Using URI: ${uri.replace(/\/\/([^:]+):([^@]+)@/, '//***:***@')}`);
 
@@ -91,3 +93,16 @@ export async function diagnoseSystem() {
     }
   }
 }
+
+
+const command: EchoCommand = {
+  name: ':diag',
+  description: 'Run diagnostics on the system',
+  async run(args: string[]) {
+      console.log('🔧 Running git merge...');
+      diagnoseSystem();
+      console.log(chalk.green('✅ Command Executed.\n'));
+  }
+};
+
+export default command;

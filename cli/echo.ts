@@ -4,14 +4,9 @@ import {
     saveTask,
     markTaskDone
 } from '../data/tasks';
-import { clearLogs } from './commands/clearlogs';
-import { diagnoseSystem } from './commands/diagnostics';
-import { startAgent } from './commands/dev-agent';
-import { rl, ask } from './commands/common';
-import { initProjectStructure } from './commands/init-project';
-import { reloadEnv } from './commands/reload-env';
+import { rl, ask } from './common';
 
-import { loadCommands, EchoCommand } from './plugin-loader';
+import { loadCommands, buildCommandMap, EchoCommand } from './plugin-loader';
 
 async function EchoAgent() {
     console.clear();
@@ -20,10 +15,11 @@ async function EchoAgent() {
 
     // Load all plugin commands at startup
     const commands: EchoCommand[] = await loadCommands('./cli/commands');
+
     console.log(chalk.gray(`Loaded ${commands.length} commands from plugins.`));
 
     // Build help from descriptions
-    const commandMap = new Map(commands.map(cmd => [cmd.name, cmd]));
+    const commandMap = buildCommandMap(commands);
 
     rl.prompt();
 
@@ -38,7 +34,7 @@ async function EchoAgent() {
             await runMatchedCommand();
         }
 
-        if (command === ':git') {
+        if (command === ':git' || command === ':git status' || command === ':git st') {
             await runMatchedCommand();
         } else if (command === ':git log') {
             await runMatchedCommand();
@@ -63,6 +59,10 @@ async function EchoAgent() {
         } else if (command.startsWith(':git checkout')) {
             const branch = command.split(' ')[2];
             if (!branch) return console.log(chalk.red('❌ Usage: :git checkout <branch>'));
+            await runMatchedCommand();
+        } else if (command === ':git branch') {
+            const branch = command.split(' ')[2];
+            if (!branch) return console.log(chalk.red('❌ Usage: :git branch <branch>'));
             await runMatchedCommand();
         } else if (command === ':git create') {
             const branch = command.split(' ')[2];
@@ -91,26 +91,27 @@ async function EchoAgent() {
             const task = await markTaskDone(n - 1);
             console.log(chalk.green(`✅ Task "${task.title}" marked as done.`));
         } else if (command === ':clear') {
-            clearLogs();
+            await runMatchedCommand();
             console.log(chalk.green('✅ Logs cleared.'));
         } else if (command === ':diag') {
-            await diagnoseSystem();
+            await runMatchedCommand();
             console.log(chalk.green('✅ Diagnostics completed.'));
         } else if (command === ':agent') {
-            startAgent();
+            await runMatchedCommand();
         } else if (command.startsWith(':project init')) {
             const args = command.split(' ').slice(3);
             const projectName = command.split(' ')[2];
             if (!projectName) return console.log(chalk.red('❌ Project name is required.'));
             if (args.length === 0) return console.log(chalk.red('❌ No folders specified.'));
-            await initProjectStructure(projectName, args);
+            await runMatchedCommand();
             console.log(chalk.green(`✅ Project structure initialized in ${projectName}/`));
         } else if (command === ':project add') {
             // await addProjectFile();
             // console.log(chalk.green('✅ Project file added.'));
         } else if (command === ':reload env') {
-            reloadEnv();
-            console.log(chalk.green('🔄 Environment variables reloaded.'));
+            await runMatchedCommand();
+        } else {
+            console.log(chalk.red(`❌ Unknown command: ${command}`));
         }
 
         rl.prompt(true);
@@ -120,22 +121,22 @@ async function EchoAgent() {
             const tokens = command.trim().split(/\s+/);
 
             // Try longest match first
-            let matchedCommand = '';
-            for (let i = tokens.length; i > 0; i--) {
-                const tryCmd = tokens.slice(0, i).join(' ');
-                if (commandMap.has(tryCmd)) {
-                    matchedCommand = tryCmd;
-                    break;
-                }
-            }
+            // let matchedCommand = '';
+            // for (let i = tokens.length; i > 0; i--) {
+            //     const tryCmd = tokens.slice(0, i).join(' ');
+            //     if (commandMap.has(tryCmd)) {
+            //         matchedCommand = tryCmd;
+            //         break;
+            //     }
+            // }
 
-            if (!matchedCommand) {
-                console.log(chalk.red(`❌ Unknown command: ${tokens[0]}...`));
-                return;
-            }
+            // if (!matchedCommand) {
+            //     console.log(chalk.red(`❌ Unknown command: ${tokens[0]}...`));
+            //     return;
+            // }
 
-            const args = tokens.slice(matchedCommand.split(' ').length);
-            const match = commandMap.get(matchedCommand);
+            const args = tokens.slice(command.split(' ').length);
+            const match = commandMap.get(command);
             await match!.run(args);
         }
     }).on('close', () => {
