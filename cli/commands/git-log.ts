@@ -5,6 +5,7 @@ import chalk from 'chalk';
 const command: EchoCommand = {
     name: ':git log',
     description: 'Show Git log',
+    aliases: [':git log', ':git lg', ':gl'],
     async run() {
         console.log('🔧 Running git log...');
         runGitCommand(['log', '-n', '5', '--pretty="format:%h %s (%cr)"'], (output: string) => {

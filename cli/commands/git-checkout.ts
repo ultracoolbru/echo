@@ -5,6 +5,7 @@ import chalk from 'chalk';
 const command: EchoCommand = {
     name: ':git checkout',
     description: 'Checkout a Git branch',
+    aliases: [':git checkout', ':gcheckout'],
     async run(args: string[]) {
         const branch = args[0];
         if (!branch) {

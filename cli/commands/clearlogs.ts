@@ -25,6 +25,7 @@ function clearLogs() {
 const command: EchoCommand = {
   name: ':clear',
   description: 'Clear logs',
+  aliases: [':clear logs', ':logs clear', ':logs'],
   async run(args: string[]) {
     console.log('🔧 Running command...');
     clearLogs();

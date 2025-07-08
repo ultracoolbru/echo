@@ -5,6 +5,7 @@ import chalk from 'chalk';
 const command: EchoCommand = {
     name: ':git init',
     description: 'Initialize a new Git repository',
+    aliases: [':git init', ':gi'],
     async run(args: string[]) {
         console.log('🔧 Running git init...');
         runGitCommand(['init'], (output: string) => {

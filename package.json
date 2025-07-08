@@ -1,6 +1,6 @@
 {
   "name": "echo-digital-clone",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,7 +14,6 @@
     "chalk": "^5.4.1",
     "dotenv": "^16.4.7",
     "googleapis": "^148.0.0",
-    "mangodb": "^1.0.0",
     "mongodb": "^6.15.0",
     "node-cron": "^3.0.3",
     "open": "^10.1.0",

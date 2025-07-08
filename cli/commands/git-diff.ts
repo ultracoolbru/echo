@@ -5,6 +5,7 @@ import chalk from 'chalk';
 const command: EchoCommand = {
     name: ':git diff',
     description: 'Show Git diff',
+    aliases: [':git diff', ':gd'],
     async run() {
         console.log('🔧 Running git diff...');
         runGitCommand(['diff'], (output: string) => {

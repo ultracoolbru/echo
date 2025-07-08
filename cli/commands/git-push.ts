@@ -5,6 +5,7 @@ import chalk from 'chalk';
 const command: EchoCommand = {
     name: ':git push',
     description: 'Push changes to the remote repository',
+    aliases: [':git push', ':gpush'],
     async run(args: string[]) {
         console.log('🔧 Running git push...');
         runGitCommand(['push'], (output: string) => {

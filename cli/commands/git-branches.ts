@@ -5,6 +5,7 @@ import chalk from 'chalk';
 const command: EchoCommand = {
     name: ':git branches',
     description: 'Show Git branches',
+    aliases: [':git branches', ':gb'],
     async run() {
         console.log('🔧 Running git branches...');
         runGitCommand(['branch'], (output: string) => {

@@ -5,6 +5,7 @@ import chalk from 'chalk';
 const command: EchoCommand = {
     name: ':git commit all',
     description: 'Perform a Git commit all',
+    aliases: [':gca'],
     async run(args: string[]) {
         console.log('🔧 Running git commit all...');
         runGitCommand(['add', '.'], (output: string) => {

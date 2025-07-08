@@ -10,6 +10,8 @@ import { loadProjectMetadata } from '../metadata';
 import { getDiff, commitAll } from './git';
 import { logConversation, getRecentConversations } from '../../data/memory';
 
+import { runEchoAgent } from '../echo'; // Import the main Echo CLI module
+
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // Extend globalThis to include custom properties
@@ -102,13 +104,28 @@ function startAgent() {
       console.log('\n🔍 What should Echo do?');
       const action = await ask('> ');
 
-      if (action.trim().toLowerCase() === 'exit') {
-        endSession();
-        break;
+      let code = undefined;
+
+      if (action === '') {
+        code = await ask('\n📄 Paste code or leave blank:\n> ');
       }
 
-      const code = await ask('\n📄 Paste code or leave blank:\n> ');
-      await runDevAgent(action, code || undefined);
+      if (action.trim().toLowerCase() === 'exit') {
+        console.log(chalk.yellow('\n👋 Goodbye.'));
+        endSession();
+        break; // End agent loop
+      } else if (action.trim().toLowerCase() === ':echo') {
+        console.log(chalk.green('\n🔄 Returning to Echo CLI...'));
+
+        rl.removeAllListeners('line'); // 🧹 Important: Remove listeners
+
+        await runEchoAgent(); // 🔄 Restart Echo CLI
+
+        break; // End agent loop
+      }
+
+
+      await runDevAgent(action, code ?? undefined);
     }
   })();
 }
@@ -116,6 +133,7 @@ function startAgent() {
 const command: EchoCommand = {
   name: ':agent',
   description: 'Start Echo Dev Agent session',
+  aliases: [':echo agent', ':dev agent', ':dev'],
   async run() {
     startAgent();
   }
