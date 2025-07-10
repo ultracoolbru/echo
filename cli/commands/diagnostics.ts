@@ -1,11 +1,11 @@
-import { MongoClient } from 'mongodb';
-import dotenv from 'dotenv';
-import path from 'path';
-import fs from 'fs';
-import { EchoCommand } from '../plugin-loader';
-import chalk from 'chalk';
 import axios from 'axios';
+import chalk from 'chalk';
 import { exec } from 'child_process';
+import dotenv from 'dotenv';
+import fs from 'fs';
+import { MongoClient } from 'mongodb';
+import path from 'path';
+import { EchoCommand } from '../plugin-loader';
 
 // Configure environment
 dotenv.config({ path: path.resolve(__dirname, '.env') });
@@ -174,7 +174,7 @@ async function runDiagnosticsOnNetwork() {
     try {
       if (!url) {
         console.log(chalk.red('URL is undefined or invalid.'));
-        //allUrlsReachable = false;
+        allUrlsReachable = false;
         console.log(chalk.red(`URL ${url} is not reachable.`));
         continue;
       }
@@ -185,8 +185,6 @@ async function runDiagnosticsOnNetwork() {
         console.log(chalk.green(`URL ${url} is reachable.`));
         console.log(`Response status: ${response.status}`);
         console.log(`Response status text: ${response.statusText}`);
-        console.log(chalk.green('Network connectivity check completed successfully'));
-        allUrlsReachable = true;
       } else {
         console.log(chalk.red(`URL ${url} is not reachable.`));
         allUrlsReachable = false;
@@ -195,11 +193,13 @@ async function runDiagnosticsOnNetwork() {
       console.log(chalk.red(`Error checking URL ${url}: ${error}`));
       allUrlsReachable = false;
     }
-    if (!allUrlsReachable) {
-      console.log(chalk.yellow('Warning: Some URLs are not reachable. The CLI might not function correctly.'));
-    } else {
-      console.log(chalk.green('All URLs are reachable.'));
-    }
+  }
+
+  // Final status check after all URLs have been tested
+  if (!allUrlsReachable) {
+    console.log(chalk.yellow('Warning: Some URLs are not reachable. The CLI might not function correctly.'));
+  } else {
+    console.log(chalk.green('All URLs are reachable.'));
   }
 }
 
@@ -230,18 +230,18 @@ async function runDiagnosticsOnVersion() {
 async function runDiagnosticOnGit() {
   console.log('\n--- Git Repository Check ---');
 
-exec('git rev-parse --is-inside-work-tree', (error, stdout, stderr) => {
+  exec('git rev-parse --is-inside-work-tree', (error, stdout, stderr) => {
     if (error) {
-        console.log(chalk.red('Not a Git repository or Git not installed.'));
-        console.error(`exec error: ${error instanceof Error ? error.message : JSON.stringify(error)}`);
-        return;
+      console.log(chalk.red('Not a Git repository or Git not installed.'));
+      console.error(`exec error: ${error instanceof Error ? error.message : JSON.stringify(error)}`);
+      return;
     }
     if (stdout.trim() === 'true') {
-        console.log(chalk.green('Running inside a Git repository.'));
+      console.log(chalk.green('Running inside a Git repository.'));
     } else {
-        console.log(chalk.yellow('Not running inside a Git repository.'));
+      console.log(chalk.yellow('Not running inside a Git repository.'));
     }
-});
+  });
 }
 
 const command: EchoCommand = {

@@ -1,12 +1,7 @@
 import chalk from 'chalk';
-import {
-    listTasks,
-    saveTask,
-    markTaskDone
-} from '../data/tasks';
-import { rl, ask } from './common';
+import { rl } from './common';
 
-import { loadCommands, buildCommandMap, EchoCommand } from './plugin-loader';
+import { buildCommandMap, EchoCommand, loadCommands } from './plugin-loader';
 
 async function EchoAgent(): Promise<void> {
     console.clear();
@@ -77,6 +72,13 @@ async function EchoAgent(): Promise<void> {
         // Git Branch
         ':git branch': () => runMatchedCommand(':git branch', commandMap),
         ':gbranch': () => runMatchedCommand(':gbranch', commandMap),
+
+        // AI Agent
+        ':agent': () => runMatchedCommand(':agent', commandMap),
+
+        // Diagnostics
+        ':diag': () => runMatchedCommand(':diag', commandMap),
+
     }
 
     rl.prompt();

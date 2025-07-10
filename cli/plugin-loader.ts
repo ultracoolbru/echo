@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'url';
 
 export interface EchoCommand {
   name: string;
@@ -20,7 +21,9 @@ export async function loadCommands(dir: string): Promise<EchoCommand[]> {
 
   for (const file of files) {
     const modPath = path.resolve(dir, file);
-    const mod = await import(modPath);
+    // Convert Windows path to file:// URL for ESM compatibility
+    const modUrl = pathToFileURL(modPath).href;
+    const mod = await import(modUrl);
     if (mod.default && typeof mod.default.run === 'function') {
       commands.push(mod.default as EchoCommand);
     }

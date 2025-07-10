@@ -9,20 +9,32 @@
     "start:scheduler": "ts-node scheduler/index.ts"
   },
   "dependencies": {
+    "@chroma-core/default-embed": "^0.1.8",
     "@inquirer/prompts": "^7.4.0",
+    "@langchain/community": "^0.3.48",
+    "@langchain/core": "^0.3.62",
+    "@langchain/openai": "^0.5.18",
+    "@octokit/rest": "^22.0.0",
     "axios": "^1.8.4",
     "chalk": "^5.4.1",
+    "chromadb": "^3.0.7",
     "dotenv": "^16.4.7",
     "googleapis": "^148.0.0",
+    "langchain": "^0.3.29",
     "mongodb": "^6.15.0",
     "node-cron": "^3.0.3",
+    "node-telegram-bot-api": "^0.66.0",
     "open": "^10.1.0",
     "path": "^0.12.7",
     "simple-git": "^3.27.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/mongodb": "^4.0.6",
     "@types/node": "^22.13.14",
-    "@types/node-cron": "^3.0.11"
+    "@types/node-cron": "^3.0.11",
+    "@types/node-telegram-bot-api": "^0.64.9",
+    "jest": "^30.0.4",
+    "ts-jest": "^29.4.0"
   }
 }
